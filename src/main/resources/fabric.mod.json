@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "skybox_athome",
+  "version": "${version}",
+
+  "name": "Skybox at Home",
+  "description": "No, we have Skybox at home!",
+  "authors": [],
+  "contact": {},
+
+  "license": "MIT",
+  "icon": "assets/skybox_athome/icon.png",
+
+  "environment": "*",
+  "entrypoints": {},
+
+      "mixins": [
+        "skybox_athome.mixins.json"
+      ],
+
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+        "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
