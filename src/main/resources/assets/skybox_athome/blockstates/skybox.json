@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "skybox_athome:block/skybox" }
+  }
+}

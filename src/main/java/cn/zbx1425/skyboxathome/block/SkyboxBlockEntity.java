@@ -17,11 +17,13 @@ public class SkyboxBlockEntity extends BlockEntity {
 
     @Override
     public void load(CompoundTag compoundTag) {
-        texture = new ResourceLocation(compoundTag.getString("texture"));
+        texture = compoundTag.contains("texture")
+            ? new ResourceLocation(compoundTag.getString("texture"))
+            : null;
     }
 
     @Override
     protected void saveAdditional(CompoundTag compoundTag) {
-        compoundTag.putString("texture", texture.toString());
+        if (texture != null) compoundTag.putString("texture", texture.toString());
     }
 }
