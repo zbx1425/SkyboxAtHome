@@ -2,25 +2,32 @@
   "schemaVersion": 1,
   "id": "skybox_athome",
   "version": "${version}",
-
   "name": "Skybox at Home",
   "description": "No, we have Skybox at home!",
-  "authors": [],
-  "contact": {},
-
+  "authors": [
+    "Zbx1425"
+  ],
+  "contact": {
+    "website": "https://www.zbx1425.cn",
+    "repo": "https://github.com/zbx1425/SkyboxAtHome"
+  },
   "license": "MIT",
   "icon": "assets/skybox_athome/icon.png",
-
   "environment": "*",
-  "entrypoints": {},
-
-      "mixins": [
-        "skybox_athome.mixins.json"
-      ],
-
+  "entrypoints": {
+    "client": [
+      "cn.zbx1425.skyboxathome.client.SkyboxAtHomeClient"
+    ],
+    "main": [
+      "cn.zbx1425.skyboxathome.SkyboxAtHome"
+    ]
+  },
+  "mixins": [
+    "skybox_athome.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=${loader_version}",
-        "fabric": "*",
+    "fabric": "*",
     "minecraft": "${minecraft_version}"
   }
 }
