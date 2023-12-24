@@ -1,9 +1,14 @@
 package cn.zbx1425.skyboxathome.client;
 
 import cn.zbx1425.skyboxathome.SkyboxAtHome;
+import cn.zbx1425.skyboxathome.client.data.SkyboxRegistry;
+import cn.zbx1425.skyboxathome.client.render.CameraState;
 import cn.zbx1425.skyboxathome.client.render.SkyboxBlockEntityRenderer;
 import cn.zbx1425.skyboxathome.client.render.SkyboxRenderType;
+import cn.zbx1425.skyboxathome.network.PacketSkyboxScreenS2C;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -30,8 +35,15 @@ public class SkyboxAtHomeClient implements ClientModInitializer {
                 } catch (Exception ex) {
                     SkyboxAtHome.LOGGER.error("Failed to reload skybox shader", ex);
                 }
+                SkyboxRegistry.loadResources(resourceManager);
             }
         });
+
+        WorldRenderEvents.AFTER_SETUP.register(context -> {
+            CameraState.acquire(context);
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(PacketSkyboxScreenS2C.IDENTIFIER, PacketSkyboxScreenS2C.Client::handle);
     }
 
 

@@ -2,8 +2,10 @@ package cn.zbx1425.skyboxathome;
 
 import cn.zbx1425.skyboxathome.block.SkyboxBlock;
 import cn.zbx1425.skyboxathome.block.SkyboxBlockEntity;
+import cn.zbx1425.skyboxathome.network.PacketSkyboxScreenS2C;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -37,5 +39,7 @@ public class SkyboxAtHome implements ModInitializer {
                 new ResourceLocation(MODID, "skybox"), SKYBOX_BLOCK_ENTITY);
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.BUILDING_BLOCKS)
                 .register(consumer -> consumer.accept(new ItemStack(SKYBOX_BLOCKITEM)));
+
+
     }
 }
