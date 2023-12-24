@@ -2,7 +2,7 @@ package cn.zbx1425.skyboxathome;
 
 import cn.zbx1425.skyboxathome.block.SkyboxBlock;
 import cn.zbx1425.skyboxathome.block.SkyboxBlockEntity;
-import cn.zbx1425.skyboxathome.network.PacketSkyboxScreenS2C;
+import cn.zbx1425.skyboxathome.network.PacketUpdateBlockEntity;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -40,6 +40,6 @@ public class SkyboxAtHome implements ModInitializer {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.BUILDING_BLOCKS)
                 .register(consumer -> consumer.accept(new ItemStack(SKYBOX_BLOCKITEM)));
 
-
+        ServerPlayNetworking.registerGlobalReceiver(PacketUpdateBlockEntity.IDENTIFIER, PacketUpdateBlockEntity::handle);
     }
 }

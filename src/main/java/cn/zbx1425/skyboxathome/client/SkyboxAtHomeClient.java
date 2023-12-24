@@ -5,7 +5,7 @@ import cn.zbx1425.skyboxathome.client.data.SkyboxRegistry;
 import cn.zbx1425.skyboxathome.client.render.CameraState;
 import cn.zbx1425.skyboxathome.client.render.SkyboxBlockEntityRenderer;
 import cn.zbx1425.skyboxathome.client.render.SkyboxRenderType;
-import cn.zbx1425.skyboxathome.network.PacketSkyboxScreenS2C;
+import cn.zbx1425.skyboxathome.network.PacketSkyboxScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
@@ -43,7 +43,7 @@ public class SkyboxAtHomeClient implements ClientModInitializer {
             CameraState.acquire(context);
         });
 
-        ClientPlayNetworking.registerGlobalReceiver(PacketSkyboxScreenS2C.IDENTIFIER, PacketSkyboxScreenS2C.Client::handle);
+        ClientPlayNetworking.registerGlobalReceiver(PacketSkyboxScreen.IDENTIFIER, PacketSkyboxScreen.Client::handle);
     }
 
 

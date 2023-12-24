@@ -6,6 +6,7 @@ import cn.zbx1425.skyboxathome.block.SkyboxBlockEntity;
 import cn.zbx1425.skyboxathome.client.data.SkyboxProperty;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -28,8 +29,10 @@ public class SkyboxBlockEntityRenderer implements BlockEntityRenderer<SkyboxBloc
     @Override
     public void render(SkyboxBlockEntity blockEntity, float f, PoseStack poseStack, MultiBufferSource buffers, int i1, int i2) {
         SkyboxProperty property = blockEntity.getProperty();
-        VertexConsumer vertices = buffers.getBuffer(
-                property.projectionType == SkyboxProperty.ProjectionType.Equirectangular
+        boolean renderSkybox = property.projectionType == SkyboxProperty.ProjectionType.Equirectangular
+                && (Minecraft.getInstance().player != null
+                    && !Minecraft.getInstance().player.getMainHandItem().is(SkyboxAtHome.SKYBOX_BLOCKITEM));
+        VertexConsumer vertices = buffers.getBuffer(renderSkybox
                         ? SkyboxRenderType.SKYBOX_RENDER_TYPE.apply(property.texture)
                         : RenderType.entitySolid(property.texture)
         );
@@ -40,7 +43,7 @@ public class SkyboxBlockEntityRenderer implements BlockEntityRenderer<SkyboxBloc
         boolean directional = blockEntity.getBlockState().getValue(SkyboxBlock.DIRECTIONAL);
         Direction facing = blockEntity.getBlockState().getValue(BlockStateProperties.FACING);
 
-        if (property.projectionType == SkyboxProperty.ProjectionType.Equirectangular) {
+        if (renderSkybox) {
             for (int i = 0; i < SKYBOX_VERTICES.length; i += 3) {
                 if (directional && SKYBOX_QUADS_FACINGS[i / 12] != facing) continue;
                 Vector3f offset = new Vector3f(
@@ -76,26 +79,26 @@ public class SkyboxBlockEntityRenderer implements BlockEntityRenderer<SkyboxBloc
         -0.5f, -0.5f,  0.5f,
         -0.5f, -0.5f, -0.5f,
         0.5f, -0.5f, -0.5f,
-    
-        0.5f,  0.5f, 0.5f,
-        -0.5f,  0.5f, 0.5f,
+
         -0.5f, -0.5f, 0.5f,
         0.5f, -0.5f, 0.5f,
+        0.5f,  0.5f, 0.5f,
+        -0.5f,  0.5f, 0.5f,
     
         0.5f, -0.5f, -0.5f,
         -0.5f, -0.5f, -0.5f,
         -0.5f,  0.5f, -0.5f,
         0.5f,  0.5f, -0.5f,
-    
-        -0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f, -0.5f,
+
         -0.5f, -0.5f, -0.5f,
         -0.5f, -0.5f,  0.5f,
-    
-        0.5f,  0.5f, -0.5f,
-        0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f, -0.5f,
+
         0.5f, -0.5f,  0.5f,
         0.5f, -0.5f, -0.5f,
+        0.5f,  0.5f, -0.5f,
+        0.5f,  0.5f,  0.5f,
     };
 
     private static final Direction[] SKYBOX_QUADS_FACINGS = {
