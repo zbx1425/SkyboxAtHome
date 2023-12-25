@@ -39,20 +39,13 @@ public class SkyboxBlockEntityRenderer implements BlockEntityRenderer<SkyboxBloc
         Matrix4f pose = poseStack.last().pose();
         pose.translate(0.5f, 0.5f, 0.5f);
 
-        BlockPos blockPos = blockEntity.getBlockPos();
         boolean directional = blockEntity.getBlockState().getValue(SkyboxBlock.DIRECTIONAL);
         Direction facing = blockEntity.getBlockState().getValue(BlockStateProperties.FACING);
 
         if (renderSkybox) {
             for (int i = 0; i < SKYBOX_VERTICES.length; i += 3) {
                 if (directional && SKYBOX_QUADS_FACINGS[i / 12] != facing) continue;
-                Vector3f offset = new Vector3f(
-                        (float) (blockPos.getX() + 0.5 + SKYBOX_VERTICES[i] - CameraState.cameraPos.x()),
-                        (float) (blockPos.getY() + 0.5 + SKYBOX_VERTICES[i + 1] - CameraState.cameraPos.y()),
-                        (float) (blockPos.getZ() + 0.5 + SKYBOX_VERTICES[i + 2] - CameraState.cameraPos.z())
-                );
                 vertices.vertex(pose, SKYBOX_VERTICES[i], SKYBOX_VERTICES[i + 1], SKYBOX_VERTICES[i + 2])
-                        .vertex(offset.x(), offset.y(), offset.z())
                         .endVertex();
             }
         } else {

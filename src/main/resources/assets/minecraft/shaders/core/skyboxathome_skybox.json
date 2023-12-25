@@ -7,8 +7,7 @@
     "vertex": "skyboxathome_skybox",
     "fragment": "skyboxathome_skybox",
     "attributes": [
-        "Position",
-        "UV3D"
+        "Position"
     ],
     "samplers": [
         { "name": "Sampler0" }
@@ -21,6 +20,7 @@
         { "name": "FogStart", "type": "float", "count": 1, "values": [ 0.0 ] },
         { "name": "FogEnd", "type": "float", "count": 1, "values": [ 1.0 ] },
         { "name": "FogColor", "type": "float", "count": 4, "values": [ 0.0, 0.0, 0.0, 0.0 ] },
-        { "name": "FogShape", "type": "int", "count": 1, "values": [ 0 ] }
+        { "name": "FogShape", "type": "int", "count": 1, "values": [ 0 ] },
+        { "name": "IBoblessProjMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] }
     ]
 }

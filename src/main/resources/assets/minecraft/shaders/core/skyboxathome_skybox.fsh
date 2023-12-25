@@ -10,6 +10,8 @@ uniform float FogStart;
 uniform float FogEnd;
 uniform vec4 FogColor;
 
+uniform mat3 IViewRotMat;
+
 in float vertexDistance;
 in vec3 texOff;
 
