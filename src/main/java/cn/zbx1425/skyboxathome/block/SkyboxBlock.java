@@ -1,14 +1,13 @@
 package cn.zbx1425.skyboxathome.block;
 
 import cn.zbx1425.skyboxathome.SkyboxAtHome;
-import cn.zbx1425.skyboxathome.network.PacketSkyboxScreen;
+import cn.zbx1425.skyboxathome.item.SkyboxToolItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -24,6 +23,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 public class SkyboxBlock extends Block implements EntityBlock {
 
@@ -78,8 +79,19 @@ public class SkyboxBlock extends Block implements EntityBlock {
 
     @Override @SuppressWarnings("deprecation")
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (level.isClientSide) return InteractionResult.SUCCESS;
-        if (!player.getItemInHand(interactionHand).is(SkyboxAtHome.SKYBOX_BLOCKITEM)) {
+        if (player.getItemInHand(interactionHand).is(SkyboxAtHome.SKYBOX_TOOL_ITEM)) {
+            if (level.isClientSide) return InteractionResult.SUCCESS;
+            Optional<SkyboxBlockEntity> blockEntity = level.getBlockEntity(blockPos, SkyboxAtHome.SKYBOX_BLOCK_ENTITY);
+            if (blockEntity.isPresent()) {
+                String skyboxKey = SkyboxToolItem.getSkyboxKey(player.getItemInHand(interactionHand));
+                if (!blockEntity.get().skyboxKey.equals(skyboxKey)) {
+                    blockEntity.get().skyboxKey = skyboxKey;
+                    blockEntity.get().setChanged();
+                    ((ServerLevel) level).getChunkSource().blockChanged(blockPos);
+                    return InteractionResult.SUCCESS;
+                }
+            }
+
             if (blockState.getValue(DIRECTIONAL)) {
                 if (blockState.getValue(BlockStateProperties.FACING) == blockHitResult.getDirection()) {
                     level.setBlockAndUpdate(blockPos, blockState.setValue(BlockStateProperties.FACING, blockHitResult.getDirection().getOpposite()));
@@ -95,8 +107,6 @@ public class SkyboxBlock extends Block implements EntityBlock {
                 );
             }
             return InteractionResult.SUCCESS;
-        } else {
-            PacketSkyboxScreen.send((ServerPlayer)player, blockPos);
         }
         return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
     }

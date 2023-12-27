@@ -31,7 +31,7 @@ public class SkyboxBlockEntityRenderer implements BlockEntityRenderer<SkyboxBloc
         SkyboxProperty property = blockEntity.getProperty();
         boolean renderSkybox = property.projectionType == SkyboxProperty.ProjectionType.Equirectangular
                 && (Minecraft.getInstance().player != null
-                    && !Minecraft.getInstance().player.getMainHandItem().is(SkyboxAtHome.SKYBOX_BLOCKITEM));
+                    && !Minecraft.getInstance().player.getMainHandItem().is(SkyboxAtHome.SKYBOX_TOOL_ITEM));
         VertexConsumer vertices = buffers.getBuffer(renderSkybox
                         ? SkyboxRenderType.SKYBOX_RENDER_TYPE.apply(property.texture)
                         : RenderType.entitySolid(property.texture)

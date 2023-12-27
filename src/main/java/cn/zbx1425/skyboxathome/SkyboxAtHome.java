@@ -2,7 +2,8 @@ package cn.zbx1425.skyboxathome;
 
 import cn.zbx1425.skyboxathome.block.SkyboxBlock;
 import cn.zbx1425.skyboxathome.block.SkyboxBlockEntity;
-import cn.zbx1425.skyboxathome.network.PacketUpdateBlockEntity;
+import cn.zbx1425.skyboxathome.item.SkyboxToolItem;
+import cn.zbx1425.skyboxathome.network.PacketUpdateHoldingItem;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -28,6 +29,7 @@ public class SkyboxAtHome implements ModInitializer {
     public static final BlockItem SKYBOX_BLOCKITEM = new BlockItem(SKYBOX_BLOCK, new Item.Properties());
     public static final BlockEntityType<SkyboxBlockEntity> SKYBOX_BLOCK_ENTITY =
             FabricBlockEntityTypeBuilder.create(SkyboxBlockEntity::new, SKYBOX_BLOCK).build();
+    public static final Item SKYBOX_TOOL_ITEM = new SkyboxToolItem();
 
     @Override
     public void onInitialize() {
@@ -39,7 +41,12 @@ public class SkyboxAtHome implements ModInitializer {
                 new ResourceLocation(MODID, "skybox"), SKYBOX_BLOCK_ENTITY);
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.BUILDING_BLOCKS)
                 .register(consumer -> consumer.accept(new ItemStack(SKYBOX_BLOCKITEM)));
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
+                .register(consumer -> consumer.accept(new ItemStack(SKYBOX_TOOL_ITEM)));
 
-        ServerPlayNetworking.registerGlobalReceiver(PacketUpdateBlockEntity.IDENTIFIER, PacketUpdateBlockEntity::handle);
+        Registry.register(BuiltInRegistries.ITEM,
+                new ResourceLocation(MODID, "skybox_tool"), SKYBOX_TOOL_ITEM);
+
+        ServerPlayNetworking.registerGlobalReceiver(PacketUpdateHoldingItem.IDENTIFIER, PacketUpdateHoldingItem::handle);
     }
 }

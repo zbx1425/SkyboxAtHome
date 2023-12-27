@@ -1,5 +1,6 @@
 {
   "block.skybox_athome.skybox": "Skybox",
+  "item.skybox_athome.skybox_tool": "Skybox Tool",
 
   "gui.skybox_athome.image": "Image"
 }

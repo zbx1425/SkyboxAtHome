@@ -1,19 +1,25 @@
 package cn.zbx1425.skyboxathome.client.gui;
 
-import cn.zbx1425.skyboxathome.block.SkyboxBlockEntity;
 import cn.zbx1425.skyboxathome.client.data.SkyboxProperty;
 import cn.zbx1425.skyboxathome.client.data.SkyboxRegistry;
-import cn.zbx1425.skyboxathome.network.PacketUpdateBlockEntity;
+import cn.zbx1425.skyboxathome.item.SkyboxToolItem;
+import cn.zbx1425.skyboxathome.network.PacketUpdateHoldingItem;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Map;
 
 public class SkyboxScreenFactory {
 
-    public static Screen create(SkyboxBlockEntity blockEntity, Screen parentScreen) {
+    public static Screen create(InteractionHand hand, Screen parentScreen) {
+        assert Minecraft.getInstance().player != null;
+        ItemStack itemStack = Minecraft.getInstance().player.getItemInHand(hand);
+
         ConfigCategory.Builder imageCategory = ConfigCategory.createBuilder()
                         .name(Component.translatable("gui.skybox_athome.image"));
 
@@ -21,7 +27,11 @@ public class SkyboxScreenFactory {
         Option<String> imageKeyOption = Option.<String>createBuilder()
                 .name(Component.translatable("gui.skybox_athome.image"))
                 .instant(true)
-                .binding("", () -> blockEntity.skyboxKey, newValue -> blockEntity.skyboxKey = newValue)
+                .binding("", () -> SkyboxToolItem.getSkyboxKey(itemStack),
+                        newValue -> {
+                            SkyboxToolItem.setSkyboxKey(itemStack, newValue);
+                            PacketUpdateHoldingItem.Client.send(hand);
+                        })
                 .listener((option, value) -> {
                     for (Map.Entry<String, ButtonOption> entry1 : imageButtons.entrySet()) {
                         entry1.getValue().setAvailable(!entry1.getKey().equals(value));
@@ -51,7 +61,6 @@ public class SkyboxScreenFactory {
         return YetAnotherConfigLib.createBuilder()
                 .title(Component.literal("Skybox Settings"))
                 .category(imageCategory.build())
-                .save(() -> PacketUpdateBlockEntity.Client.send(blockEntity))
                 .build()
                 .generateScreen(parentScreen);
     }
