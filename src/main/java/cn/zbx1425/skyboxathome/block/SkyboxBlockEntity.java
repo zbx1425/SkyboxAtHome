@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SkyboxBlockEntity extends BlockEntity {
 
-    public String skyboxKey;
+    public String skyboxKey = "";
 
     public SkyboxBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(SkyboxAtHome.SKYBOX_BLOCK_ENTITY, blockPos, blockState);
@@ -25,13 +25,13 @@ public class SkyboxBlockEntity extends BlockEntity {
     @Override
     public void load(CompoundTag compoundTag) {
         super.load(compoundTag);
-        skyboxKey = compoundTag.contains("skyboxKey") ? compoundTag.getString("skyboxKey") : null;
+        skyboxKey = compoundTag.contains("skyboxKey") ? compoundTag.getString("skyboxKey") : "";
     }
 
     @Override
     protected void saveAdditional(CompoundTag compoundTag) {
         super.saveAdditional(compoundTag);
-        if (skyboxKey != null) compoundTag.putString("skyboxKey", skyboxKey);
+        if (!skyboxKey.isEmpty()) compoundTag.putString("skyboxKey", skyboxKey);
     }
 
     public SkyboxProperty getProperty() {

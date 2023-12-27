@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -26,6 +27,7 @@ public class SkyboxRegistry {
             new ResourceLocation(SkyboxAtHome.MODID, "textures/block/skybox.png"));
 
     public static void register(String key, SkyboxProperty property) {
+        Minecraft.getInstance().getTextureManager().getTexture(property.texture).setFilter(true, false);
         ELEMENTS.put(key, property);
     }
 

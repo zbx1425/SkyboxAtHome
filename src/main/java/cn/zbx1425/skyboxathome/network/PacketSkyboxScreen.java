@@ -2,7 +2,7 @@ package cn.zbx1425.skyboxathome.network;
 
 import cn.zbx1425.skyboxathome.SkyboxAtHome;
 import cn.zbx1425.skyboxathome.block.SkyboxBlockEntity;
-import cn.zbx1425.skyboxathome.client.gui.SkyboxScreen;
+import cn.zbx1425.skyboxathome.client.gui.SkyboxScreenFactory;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -33,7 +33,7 @@ public class PacketSkyboxScreen {
             Optional<SkyboxBlockEntity> blockEntity = client.level.getBlockEntity(blockPos, SkyboxAtHome.SKYBOX_BLOCK_ENTITY);
             if (blockEntity.isEmpty()) return;
 
-            client.execute(() -> client.setScreen(new SkyboxScreen(blockEntity.get())));
+            client.execute(() -> client.setScreen(SkyboxScreenFactory.create(blockEntity.get(), client.screen)));
         }
     }
 }
