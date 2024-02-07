@@ -1,0 +1,5 @@
+{
+    "name": "Minecraft (Ice & Mountain)",
+    "texture": "skybox_athome:skyboxes/minecraft_ice_mountain.png",
+    "description": "Some in-game sceneries. I used the 'Panorama' mod to grab it as cubemap images, and then converted it into equirectangular panorama with an online tool by danilw."
+}
